@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Login.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_Cart.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_CustomerManagement.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_CustomerProfile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_OrderHistory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_OrderManagement.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_Shopping.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="P_Static.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="W_AddToCart.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="W_Admin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="W_ChangePassword.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="W_Customer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="W_UpdateOrderDetail.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="W_UpdateProfile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Login.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_Cart.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_CustomerManagement.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_CustomerProfile.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_OrderHistory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_OrderManagement.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_Shopping.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="P_Static.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="W_Admin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="W_ChangePassword.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="W_Customer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="W_UpdateOrderDetail.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="W_UpdateProfile.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

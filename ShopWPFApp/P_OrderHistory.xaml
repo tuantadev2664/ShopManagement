@@ -1,0 +1,273 @@
+﻿<Page x:Class="ShopWPFApp.P_OrderHistory"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ShopWPFApp"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Background="White"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="P_OrderHistory">
+
+    <Page.Resources>
+        <Style x:Key="BookingCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.2" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StatusChipStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="12,4"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding OrderStatus}" Value="Pending">
+                    <Setter Property="Background" Value="#FFF3E0"/>
+                    <Setter Property="TextBlock.Foreground" Value="#E65100"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding OrderStatus}" Value="Confirmed">
+                    <Setter Property="Background" Value="#E8F5E9"/>
+                    <Setter Property="TextBlock.Foreground" Value="#1B5E20"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding OrderStatus}" Value="Cancelled">
+                    <Setter Property="Background" Value="#FFEBEE"/>
+                    <Setter Property="TextBlock.Foreground" Value="#B71C1C"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{DynamicResource MaterialDesignBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <materialDesign:Card Grid.Row="0" Margin="16,16,16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Order History"
+                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Margin="16"/>
+
+                <!-- Refresh Button -->
+                <Button Grid.Column="1"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    ToolTip="Refresh"
+                    Margin="8"
+                    Click="btn_Reload_Click">
+                    <materialDesign:PackIcon Kind="Refresh" HorizontalAlignment="Center"/>
+                </Button>
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Row="1" 
+                Grid.ColumnSpan="1" 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Center" 
+                Margin="5">
+            <Button Content="Search by OrderId" 
+                Click="btn_Search" 
+                Height="30" 
+                Margin="10"/>
+            <TextBox x:Name="tbSearchbyText" 
+                 MinWidth="100" 
+                 materialDesign:HintAssist.Hint="Search" 
+                 IsEnabled="True" 
+                 Grid.Row="4" 
+                 Grid.Column="1" 
+                 Margin="5"/>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="2" 
+                  Margin="16,8,16,16" 
+                  VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding orderList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="0,0,0,16" UniformCornerRadius="8">
+                            <Expander Header="{Binding OrderId, StringFormat={}Booking #{0}}"
+                                 IsExpanded="True">
+                                <StackPanel Margin="16">
+                                    <!-- Order Info -->
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Calendar" 
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,0,8,0"/>
+                                            <TextBlock Text="{Binding OrderDate, StringFormat={}Booking Date: {0}}"
+                                                 VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <Border Grid.Column="3" Style="{StaticResource StatusChipStyle}">
+                                            <TextBlock Text="{Binding OrderStatus}"
+                                                 FontWeight="Medium"/>
+                                        </Border>
+
+                                        <!-- Remove Button -->
+                                        <Button Grid.Column="1" 
+                                            Command="{Binding DataContext.EditBookingCommand, 
+                                                     RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding OrderId}"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            Click="btn_Remove_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Remove" Margin="0,0,8,0"/>
+                                                <TextBlock Text="Remove"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+
+                                    <!-- Total Price -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                        <materialDesign:PackIcon Kind="CurrencyUsd" 
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,8,0"/>
+                                        <TextBlock Text="{Binding TotalPrice, StringFormat={}Total: ${0:N2}}"
+                                             FontWeight="Medium"
+                                             FontSize="16"/>
+                                    </StackPanel>
+
+                                    <!-- Order Details -->
+                                    <materialDesign:Card UniformCornerRadius="4" Background="#F5F5F5">
+                                        <ListView ItemsSource="{Binding OrderDetails}"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            MaxHeight="300">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="ID" Width="80">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    
+                                                                    <TextBlock Text="{Binding OrderDetailId}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Image" Width="100">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Source="{Binding ProductDetail.Product.ProductImage}" 
+                       Width="80" 
+                       Height="80" 
+                       Stretch="Uniform"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Name" Width="100">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    
+                                                                    <TextBlock Text="{Binding ProductDetail.Product.ProductName}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Color" Width="95">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+         
+                                                                    <TextBlock Text="{Binding ProductDetail.Color}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Size" Width="90">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                   
+                                                                    <TextBlock Text="{Binding ProductDetail.Size}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Quantity" Width="120">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    
+                                                                    <TextBlock Text="{Binding Quantity}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Price" Width="100">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal"
+                                                                      HorizontalAlignment="Right">
+                                                                    <materialDesign:PackIcon Kind="CurrencyUsd"
+                                                                                       Margin="0,0,4,0"/>
+                                                                    <TextBlock Text="{Binding ProductDetail.Product.ProductPrice, 
+                                                                         StringFormat={}{0:N2}}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="ActualPrice" Width="150">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal"
+                                                                      HorizontalAlignment="Right">
+                                                                    <materialDesign:PackIcon Kind="CurrencyUsd"
+                                                                                       Margin="0,0,4,0"/>
+                                                                    <TextBlock Text="{Binding ActualPrice, 
+                                                                         StringFormat={}{0:N2}}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                    </materialDesign:Card>
+                                </StackPanel>
+                            </Expander>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>

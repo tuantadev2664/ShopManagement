@@ -1,0 +1,113 @@
+﻿<Page x:Class="ShopWPFApp.P_Cart"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ShopWPFApp"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      Background="White"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="800"
+      Title="P_Cart">
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Order Detail" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,10,0,10" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Width="130"/>
+
+        <Image x:Name="Image" Grid.Row="1" Height="200" Grid.Column="0"  VerticalAlignment="Top" Margin="10" Width="175"
+       Source="{Binding ImageSource}" />
+
+        <Grid   Grid.Row="1" Grid.Column="2" Margin="5,10,36,5" Width="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!--part1-->
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Id" Grid.Row="1" Grid.Column="0" Margin="5"/>
+            <TextBox x:Name="tbProductDetailId" MinWidth="150" IsEnabled="False" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Name" Grid.Row="2" Grid.Column="0" Margin="5"/>
+            <TextBox x:Name="tbName" MinWidth="150"  IsEnabled="False" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Price" Grid.Row="3" Grid.Column="0" Margin="5"/>
+            <TextBox x:Name="tbPrice" MinWidth="150" IsEnabled="False" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Color" Grid.Row="4" Grid.Column="0" Margin="5"/>
+            <TextBox x:Name="tbColor" MinWidth="150" IsEnabled="False" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+            <!--part2-->
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Size" Grid.Row="1" Grid.Column="2" Margin="5"/>
+            <TextBox x:Name="tbSize" MinWidth="150" IsEnabled="False" Grid.Row="1" Grid.Column="3" Margin="5"/>
+
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="Quantity" Grid.Row="2" Grid.Column="2" Margin="5"/>
+            <TextBox x:Name="tbQuantity" MinWidth="150"  IsEnabled="False" Grid.Row="2" Grid.Column="3" Margin="5"/>
+
+            <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="ActualPrice" Grid.Row="3" Grid.Column="2" Margin="5"/>
+            <TextBox x:Name="tbActualPrice" MinWidth="150" IsEnabled="False" Grid.Row="3" Grid.Column="3" Margin="5"/>
+
+            <StackPanel Grid.Row="5" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Width="400">
+                <Button Content="Update" Height="30" Click="btn_Update" Margin="5"/>
+                <Button Content="Delete" Height="30" Click="btn_Delete" Margin="5"/>
+
+                <Button Content="Complete" Click="btn_CompleteBooking"  Height="30" Margin="10" Width="80"/>
+                <TextBox x:Name="tb_TotalPrice"  MinWidth="100"  Height="30" materialDesign:HintAssist.Hint="Total Price" IsEnabled="False" Margin="5"/>
+            </StackPanel>
+
+        </Grid>
+
+        <DataGrid x:Name="dataGrid"
+      Grid.Row="10" Grid.ColumnSpan="4"
+      AutoGenerateColumns="False"
+      CanUserAddRows="False"
+      HeadersVisibility="All"
+      ItemsSource="{Binding BookingDetailVMs, UpdateSourceTrigger=PropertyChanged}"
+      SelectionUnit="FullRow"
+      AlternatingRowBackground="LightGray"
+      IsReadOnly="True" 
+      Margin="10,10,10,10" SelectionChanged="dataGrid_SelectionChanged">    
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ProductDetailId}" Header="Id" />
+                <DataGridTemplateColumn Header="Image">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding ProductDetail.Product.ProductImage}"  Width="80" Height="80" Stretch="Uniform" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding ProductDetail.Product.ProductName}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding ProductDetail.Color}" Header="Color" />
+                <DataGridTextColumn Binding="{Binding ProductDetail.Size}" Header="Size" />
+                <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" />
+                <DataGridTextColumn Binding="{Binding ProductDetail.Product.ProductPrice}" Header="Price" />
+                <DataGridTextColumn Binding="{Binding ActualPrice}" Header="Actual Price" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>
